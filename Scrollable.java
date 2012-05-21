@@ -63,11 +63,12 @@ public class Scrollable
       			}
 
 			res.first();
-			while(res.next())
+			while(!res.isAfterLast())
 			{
 				String myNum  = res.getString(1);
 				String myNum2 = res.getString("col1");
 				System.out.println("   "+myNum+"  " + myNum2);
+				res.next();
 			}
 
 
