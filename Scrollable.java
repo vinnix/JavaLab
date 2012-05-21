@@ -3,6 +3,7 @@
  * 
  */
 import java.sql.*;
+import org.postgresql.PGStatement;
 public class Scrollable 
 {
 	public static void main(String [] args) 
@@ -78,6 +79,29 @@ public class Scrollable
 			// Close ResultSet and Statement
 			res.close();
 			sta.close();
+
+
+
+			PreparedStatement pstmt = con.prepareStatement("SELECT ?");
+
+			// cast to the pg extension interface
+			org.postgresql.PGStatement pgstmt = (org.postgresql.PGStatement)pstmt;
+
+			// on the third execution start using server side statements
+			pgstmt.setPrepareThreshold(3);
+
+			for (int i=1; i<=5; i++)
+			{
+				pstmt.setInt(1,i);
+				boolean usingServerPrepare = pgstmt.isUseServerPrepare();
+				ResultSet rs = pstmt.executeQuery();
+				rs.next();
+				System.out.println("Execution: "+i+", Used server side: " + usingServerPrepare + ", Result: "+rs.getInt(1));
+				rs.close();
+			}
+
+			pstmt.close();
+
 
 			con.close();
 		}

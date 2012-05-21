@@ -13,6 +13,6 @@ $ wget http://jdbc.postgresql.org/download/postgresql-9.1-902.jdbc4.jar
 
 $ mkdir bin
 
-$ javac Scrollable.java -d bin/
+$ javac -cp postgresql-9.1-902.jdbc4.jar  Scrollable.java -d bin/
 
 $ java -cp postgresql-9.1-902.jdbc4.jar:. Scrollable
