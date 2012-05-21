@@ -65,8 +65,9 @@ public class Scrollable
 			res.first();
 			while(res.next())
 			{
-				String myNum = res.getString(1);
-				System.out.println("   "+myNum);
+				String myNum  = res.getString(1);
+				String myNum2 = res.getString("col1");
+				System.out.println("   "+myNum+"  " + myNum2);
 			}
 
 
