@@ -1,0 +1,12 @@
+
+Running some tests with PostgreSQL and JDBC
+
+$ psql -d postgres -c "CREATE TABLE tb_teste (col1 INTEGER) ;"
+
+$ psql -d postgres -c "INSERT INTO tb_teste VALUES (generate_series(1,40)) ;"
+
+$ wget http://jdbc.postgresql.org/download/postgresql-9.1-902.jdbc4.jar
+
+$ javac Scrollable.java
+
+$ java -cp postgresql-9.1-902.jdbc4.jar:. Scrollable
