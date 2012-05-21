@@ -27,10 +27,13 @@ public class Scrollable
       			con = DriverManager.getConnection("jdbc:postgresql://localhost/postgres","pgsql","pgsql");
 
 			// Create a Statement for scrollable ResultSet
-			Statement sta = con.createStatement( ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			// Statement sta = con.createStatement( ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY); // some tests with CONCUR_UPDATABLE
+
+			// Create a Statement for scrollable and updatable ResultSet
+			Statement sta = con.createStatement( ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
 			// Catch the ResultSet object
-			ResultSet res = sta.executeQuery("SELECT * FROM tb_teste");
+			ResultSet res = sta.executeQuery("SELECT * FROM tb_teste a, tb_teste2 b WHERE a.col1 = b.col1");
 
 			// Check ResultSet's scrollability
 			if (res.getType() == ResultSet.TYPE_FORWARD_ONLY) 
@@ -41,8 +44,6 @@ public class Scrollable
 			{
 				System.out.println("ResultSet scrollable.");
 			}
-
-			System.out.println("List of Profiles:");
 
 			// Move the cursor to the last row
 			res.last();
@@ -62,15 +63,25 @@ public class Scrollable
         			res.previous();
       			}
 
+			res.absolute(10);
+
+       			res.updateString("col2", "HelloWorld"); 
+       			res.updateRow(); 
+
+			
 			res.first();
+			int myIntSum =0;
 			while(!res.isAfterLast())
 			{
+				int myIntNum = res.getInt("col1");
+				myIntSum+= myIntNum;
 				String myNum  = res.getString(1);
 				String myNum2 = res.getString("col1");
-				System.out.println("   "+myNum+"  " + myNum2);
+				String myNum3 = res.getString("col2");
+				System.out.println("   "+myNum+"  " + myNum2 + " -> "+ myNum3);
 				res.next();
 			}
-
+			System.out.println("Soma de col1:"+ myIntSum);
 
 			// Close ResultSet and Statement
 			res.close();

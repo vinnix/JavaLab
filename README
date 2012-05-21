@@ -3,7 +3,11 @@ Running some tests with PostgreSQL and JDBC
 
 $ psql -d postgres -c "CREATE TABLE tb_teste (col1 INTEGER) ;"
 
+$ psql -d postgres -U pgsql -c "ALTER TABLE tb_teste ADD COLUMN col2 VARCHAR(10);"
+
 $ psql -d postgres -c "INSERT INTO tb_teste VALUES (generate_series(1,40)) ;"
+
+$ psql -U pgsql -d postgres -c "ALTER TABLE tb_teste ADD PRIMARY KEY(col1);"
 
 $ wget http://jdbc.postgresql.org/download/postgresql-9.1-902.jdbc4.jar
 
