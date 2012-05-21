@@ -20,8 +20,6 @@ public class Scrollable
 			cnfe.printStackTrace();
 		}
 
-
-
 		try 
 		{
       			con = DriverManager.getConnection("jdbc:postgresql://localhost/postgres","pgsql","pgsql");
@@ -33,7 +31,7 @@ public class Scrollable
 			Statement sta = con.createStatement( ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
 			// Catch the ResultSet object
-			ResultSet res = sta.executeQuery("SELECT * FROM tb_teste a, tb_teste2 b WHERE a.col1 = b.col1");
+			ResultSet res = sta.executeQuery("SELECT * FROM tb_teste a ORDER BY a.col1");
 
 			// Check ResultSet's scrollability
 			if (res.getType() == ResultSet.TYPE_FORWARD_ONLY) 
@@ -47,28 +45,22 @@ public class Scrollable
 
 			// Move the cursor to the last row
 			res.last();
-
 			System.out.println("Total de linhas:"+ res.getRow());
 			// Stop the loop when the cursor is positioned before the first row
 			while (!res.isBeforeFirst()) 
 			{
-				//while (res.previous()) {
-				//String firstName = res.getString("FirstName");
-				//String lastName = res.getString("LastName");
-				//System.out.println("   "+firstName+" "+lastName);
 				String myNum = res.getString(1);
 				System.out.println("   "+myNum);
-
 				// Move the cursor backward one row
         			res.previous();
       			}
 
+			// Moving cursor to 10th position and update it
 			res.absolute(10);
-
        			res.updateString("col2", "HelloWorld"); 
        			res.updateRow(); 
 
-			
+			// From the begging to the end of the cursor	
 			res.first();
 			int myIntSum =0;
 			while(!res.isAfterLast())
